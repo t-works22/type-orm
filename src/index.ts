@@ -2,6 +2,7 @@ import "reflect-metadata"
 import {createConnection} from "typeorm";
 
 import {Photo} from "./entity/Photo";
+import {PhotoMetadata} from "./entity/PhotoMetadata"
 
 createConnection({
     type: "postgres",
@@ -16,14 +17,26 @@ createConnection({
     synchronize: true,
     logging: false
 }).then(async (connection) => {
+    let photo = new Photo();
+    photo.name = "Me and Bears";
+    photo.description = "This is saved by cascade option"
+    photo.filename = "photo-with-bears.jpg";
+    photo.isPublished = true;
+    photo.views = 1;
 
-    let photos = await connection
-            .getRepository(Photo)
-            .createQueryBuilder("photo")
-            .innerJoinAndSelect("photo.metadata", "metadata")
-            .getMany()
-    console.log(photos)
+    let metadata = new PhotoMetadata();
+    metadata.height = 640;
+    metadata.width = 480;
+    metadata.compressed = true;
+    metadata.comment = "cybershoot";
+    metadata.orientation = "portrait";
 
+    photo.metadata = metadata
+
+    let photoRepository = connection.getRepository(Photo)
+    const savedPhoto = await photoRepository.save(photo)
+
+    console.log(savedPhoto);
 }).catch((error) => console.log(error))
 
 // import "reflect-metadata";
