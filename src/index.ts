@@ -2,7 +2,6 @@ import "reflect-metadata"
 import {createConnection} from "typeorm";
 
 import {Photo} from "./entity/Photo";
-import {PhotoMetadata} from "./entity/PhotoMetadata"
 
 createConnection({
     type: "postgres",
@@ -17,28 +16,11 @@ createConnection({
     synchronize: true,
     logging: false
 }).then(async (connection) => {
-    let photo = new Photo();
-    photo.name = "Test name";
-    photo.description = "Test description";
-    photo.filename = 'test-filename.jpg';
-    photo.views = 1;
-    photo.isPublished = true;
 
-    let metadata = new PhotoMetadata();
-    metadata.height = 640;
-    metadata.width = 480;
-    metadata.compressed = true;
-    metadata.comment = "cybershoot";
-    metadata.orientation = "portrait";
-    metadata.photo = photo;
 
     const photoRepository = connection.getRepository(Photo);
-    const metadataRepository = connection.getRepository(PhotoMetadata)
-
-    await photoRepository.save(photo);
-    await metadataRepository.save(metadata);
-
-    console.log("Metadata is saved, and relation between metadata and photo is created in the database too");
+    let photos = await photoRepository.find( {relations: ["metadata"]} )
+    console.log(photos);
 }).catch((error) => console.log(error))
 
 // import "reflect-metadata";
