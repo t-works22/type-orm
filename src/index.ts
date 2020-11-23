@@ -1,7 +1,5 @@
 import "reflect-metadata"
 import {createConnection} from "typeorm";
-import {User} from "./entity/User"
-import {Photo} from "./entity/Photo";
 
 createConnection({
     type: "postgres",
@@ -11,8 +9,7 @@ createConnection({
     password: 'postgres',
     database: 'postgres',
     entities: [
-        User,
-        Photo
+        __dirname + "/entity/*.ts"
     ],
     synchronize: true,
     logging: false
