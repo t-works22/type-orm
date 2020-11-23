@@ -23,11 +23,12 @@ createConnection({
     photo.views = 1;
     photo.isPublished = true;
 
-    photo = await connection.manager
-                        .save(photo)
-    console.log("Photo has been saved. Photo id is", photo.id)
+    const photoRepository = connection.getRepository(Photo);
+    await photoRepository.save(photo);
 
-    let savedPhotos = await connection.manager.find(Photo);
+    console.log("Photo has been saved");
+
+    let savedPhotos = await photoRepository.find();
     console.log("All photos from the db: ", savedPhotos);
 }).catch((error) => console.log(error))
 
