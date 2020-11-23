@@ -15,7 +15,7 @@ createConnection({
     ],
     synchronize: true,
     logging: false
-}).then((connection) => {
+}).then(async (connection) => {
     let photo = new Photo();
     photo.name = "Test name";
     photo.description = "Test description";
@@ -23,11 +23,15 @@ createConnection({
     photo.views = 1;
     photo.isPublished = true;
 
-    return connection.manager
-            .save(photo)
-            .then(photo => {
-                console.log("Photo has been saved. Photo id is", photo.id);
-            })
+    photo = await connection.manager
+                        .save(photo)
+    console.log("Photo has been saved. Photo id is", photo.id)
+
+    // return connection.manager
+    //         .save(photo)
+    //         .then(photo => {
+    //             console.log("Photo has been saved. Photo id is", photo.id);
+    //         })
 }).catch((error) => console.log(error))
 
 // import "reflect-metadata";
