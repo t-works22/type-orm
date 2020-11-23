@@ -27,11 +27,8 @@ createConnection({
                         .save(photo)
     console.log("Photo has been saved. Photo id is", photo.id)
 
-    // return connection.manager
-    //         .save(photo)
-    //         .then(photo => {
-    //             console.log("Photo has been saved. Photo id is", photo.id);
-    //         })
+    let savedPhotos = await connection.manager.find(Photo);
+    console.log("All photos from the db: ", savedPhotos);
 }).catch((error) => console.log(error))
 
 // import "reflect-metadata";
