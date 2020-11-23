@@ -1,6 +1,8 @@
 import "reflect-metadata"
 import {createConnection} from "typeorm";
 
+import {Photo} from "./entity/Photo";
+
 createConnection({
     type: "postgres",
     host: "localhost",
@@ -14,7 +16,18 @@ createConnection({
     synchronize: true,
     logging: false
 }).then((connection) => {
-    // here you can start to work with your entities
+    let photo = new Photo();
+    photo.name = "Test name";
+    photo.description = "Test description";
+    photo.filename = 'test-filename.jpg';
+    photo.views = 1;
+    photo.isPublished = true;
+
+    return connection.manager
+            .save(photo)
+            .then(photo => {
+                console.log("Photo has been saved. Photo id is", photo.id);
+            })
 }).catch((error) => console.log(error))
 
 // import "reflect-metadata";
