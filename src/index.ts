@@ -25,10 +25,10 @@ createConnection({
 
     const photoRepository = connection.getRepository(Photo);
 
-    let photoToUpdate = await photoRepository.findOne(1);
-    photoToUpdate.name = "Updated Photo";
-    const updatedPhoto = await photoRepository.save(photoToUpdate);
-    console.log("updated Photo id", updatedPhoto);
+    let photoToRemove = await photoRepository.findOne(1);
+    let result = await photoRepository.remove(photoToRemove);
+    console.log("removedPhoto is", result);
+
 }).catch((error) => console.log(error))
 
 // import "reflect-metadata";
