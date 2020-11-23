@@ -17,10 +17,13 @@ createConnection({
     logging: false
 }).then(async (connection) => {
 
+    let photos = await connection
+            .getRepository(Photo)
+            .createQueryBuilder("photo")
+            .innerJoinAndSelect("photo.metadata", "metadata")
+            .getMany()
+    console.log(photos)
 
-    const photoRepository = connection.getRepository(Photo);
-    let photos = await photoRepository.find( {relations: ["metadata"]} )
-    console.log(photos);
 }).catch((error) => console.log(error))
 
 // import "reflect-metadata";
